@@ -9,6 +9,8 @@ var connection = mysql.createConnection({
   database : 'chat'
 });
 
+connection.connect();
+
 module.exports.connection = connection;
 
 // Create a database connection and export it from this file.

@@ -3,15 +3,29 @@ var app = {
 
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'http://127.0.0.1:3000/messages/',
-  username: 'anonymous',
+  server: 'http://127.0.0.1:3000/',
+  username: 'veena',
   roomname: 'lobby',
   lastMessageId: 0,
   friends: {},
 
   init: function() {
     // Get username
-    app.username = window.location.search.substr(10);
+    // app.username = window.location.search.substr(10);
+
+    $.ajax({
+      url: app.server + 'users',
+      type: 'POST',
+      data: JSON.stringify({username: app.username}),
+      contentType: 'application/json',
+      success: function (data) {
+        // Trigger a fetch to update the messages, pass true to animate
+        console.log('added username');
+      },
+      error: function (data) {
+        console.error('chatterbox: Failed to send username', data);
+      }
+    });
 
     // Cache jQuery selectors
     app.$message = $('#message');
@@ -25,21 +39,21 @@ var app = {
     app.$roomSelect.on('change', app.saveRoom);
 
     // Fetch previous messages
-    app.startSpinner();
+    // app.startSpinner();
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(app.fetch, 3000);
+    setInterval(app.fetch, 10000);
   },
 
   send: function(data) {
-    app.startSpinner();
+    // app.startSpinner();
     // Clear messages input
     app.$message.val('');
 
     // POST the message to the server
     $.ajax({
-      url: app.server,
+      url: app.server + 'messages',
       type: 'POST',
       data: JSON.stringify(data),
       contentType: 'application/json',
@@ -55,10 +69,10 @@ var app = {
 
   fetch: function(animate) {
     $.ajax({
-      url: app.server,
+      url: app.server + 'messages',
       type: 'GET',
       contentType: 'application/json',
-      data: { order: '-createdAt'},
+      // data: { order: '-createdAt'},
       success: function(data) {
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
@@ -201,7 +215,7 @@ var app = {
         app.fetch();
       }
     } else {
-      app.startSpinner();
+      // app.startSpinner();
       // Store as undefined for empty names
       app.roomname = app.$roomSelect.val();
 
@@ -223,14 +237,14 @@ var app = {
     evt.preventDefault();
   },
 
-  startSpinner: function() {
-    $('.spinner img').show();
-    $('form input[type=submit]').attr('disabled', 'true');
-  },
+  // startSpinner: function() {
+  //   $('.spinner img').show();
+  //   $('form input[type=submit]').attr('disabled', 'true');
+  // },
 
-  stopSpinner: function() {
-    $('.spinner img').fadeOut('fast');
-    $('form input[type=submit]').attr('disabled', null);
-  }
+  // stopSpinner: function() {
+  //   $('.spinner img').fadeOut('fast');
+  //   $('form input[type=submit]').attr('disabled', null);
+  // }
 };
 

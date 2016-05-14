@@ -20,7 +20,8 @@ CREATE TABLE `Messages` (
   `Message` VARCHAR(255) NULL DEFAULT NULL,
   `RoomName` VARCHAR(255) NULL DEFAULT NULL,
   `id_Users` INTEGER NULL DEFAULT NULL,
-  `CreationTime` TIMESTAMP NULL DEFAULT NULL,
+  `CreationTime` VARCHAR(255) NULL DEFAULT NULL,  
+  -- ideally creation time would be a timestamp
   PRIMARY KEY (`id`)
 );
 
