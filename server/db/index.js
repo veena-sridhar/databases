@@ -1,3 +1,5 @@
+//I think we want to require schema.sql here
+
 var mysql = require('mysql');
 
 // Create a database connection and export it from this file.
