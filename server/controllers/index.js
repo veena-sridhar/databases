@@ -1,11 +1,14 @@
 var models = require('../models');
+var utils = require('../utils.js')
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      console.log(req);
+      // console.log(req);
     }, // a function which handles a get request for all messages
-    post: function (req, res) {} // a function which handles posting a message to the database
+    post: function (req, res) {
+      utils.sendResponse(models.messages.post(req, res), 'Success!');
+    } // a function which handles posting a message to the database
   },
 
   users: {
