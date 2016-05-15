@@ -10,12 +10,12 @@ describe('Persistent Node Chat Server', function() {
   beforeEach(function(done) {
     dbConnection = mysql.createConnection({
       user: 'root',
-      password: 'abc123', //may need to add password
+      password: '', //may need to add password
       database: 'chat'
     });
     dbConnection.connect();
 
-       var tablename = ""; // TODO: fill this out
+       var tablename = "Messages"; // TODO: fill this out
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -30,16 +30,16 @@ describe('Persistent Node Chat Server', function() {
     // Post the user to the chat server.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:3000/classes/users',
+      uri: 'http://127.0.0.1:3000/users',
       json: { username: 'Valjean' }
     }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
-        uri: 'http://127.0.0.1:3000/classes/messages',
+        uri: 'http://127.0.0.1:3000/messages',
         json: {
           username: 'Valjean',
-          message: 'In mercy\'s name, three days is all I need.',
+          text: 'In mercy''s name, three days is all I need.',
           roomname: 'Hello'
         }
       }, function () {
@@ -56,7 +56,7 @@ describe('Persistent Node Chat Server', function() {
           expect(results.length).to.equal(1);
 
           // TODO: If you don't have a column named text, change this test.
-          expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');
+          expect(results[0].Message).to.equal('In mercy''s name, three days is all I need.');
 
           done();
         });
@@ -77,7 +77,7 @@ describe('Persistent Node Chat Server', function() {
 
       // Now query the Node chat server and see if it returns
       // the message we just inserted:
-      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+      request('http://127.0.0.1:3000/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
         expect(messageLog[0].text).to.equal('Men like you can never change!');
         expect(messageLog[0].roomname).to.equal('main');

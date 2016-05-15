@@ -1,10 +1,10 @@
 var models = require('../models');
-var utils = require('../utils.js')
+var utils = require('../utils.js');
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      utils.sendResponse(models.messages.get(req, res), 'Success!');
+      models.messages.get(req, res);
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       utils.sendResponse(models.messages.post(req, res), 'Success!'); //should be doing this asynchronously: the database might hang!
